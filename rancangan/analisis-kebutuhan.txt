@@ -1,0 +1,29 @@
+Analisis Kebutuhan
+
+Aplikasi Koperasi Simpan Pinjam (RS)
+
+Pengguna : 
+1. Admin
+2. Anggota
+
+Fitur : 
+Pendaftaran Anggota (Internal RS)
+Simpanan Pokok (Nominal : 100ribu sekali bayar)
+Simpanan Wajib (Nominal : 50ribu / bulan)
+Simpanan Sukarela (opsional)
+
+Penarikan Simpanan ?
+
+Jenis Pinjaman (Uang, Barang)
+Contoh:
+Pinjam 1juta
+10x bayar, 100ribu/bulan, 5x ada bunga, 5x tidak ada bunga
+bunga berapa % ? 1%
+
+Barang Laptop (5juta)
+10x bayar, 500ribu/bulan, 5x ada bunga, 5x tidak ada bunga
+bunga berapa % ? 1%
+
+cetak nota pinjaman, 
+cetak nota angsuran, 
+cetak nota simpanan

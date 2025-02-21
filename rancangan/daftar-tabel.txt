@@ -1,0 +1,38 @@
+Tabel:
+users => tambah kolom role (admin/anggota)
+- id
+- email
+- nama
+- role
+- alamat
+- hp
+- tmt 
+- status (aktif/tidak)
+
+jenis_simpanan
+- id
+- nama jenis simpanan (wajib/pokok/sukarela)
+- nominal (50ribu/100ribu)
+
+simpanan
+- id
+- user_id (relasi dengan table users)
+- jenis_simpanan_id (relasi dengan table jenis_simpanan)
+- tanggal_simpan
+- created_by (admin yang input)
+
+pinjaman
+- id 
+- user_id (relasi dengan table users)
+- jenis_pinjaman (uang/barang)
+- tanggal_pinjam
+- created_by (admin yang input)
+- nominal_pinjaman
+
+angsuran
+- id
+- pinjaman_id
+- tanggal_angsuran
+- nominal_angsuran
+- angsuran_ke
+- created_by (admin yang input)
