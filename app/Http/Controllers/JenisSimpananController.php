@@ -12,7 +12,9 @@ class JenisSimpananController extends Controller
      */
     public function index()
     {
-        //
+        $jenis_simpanan = Jenis_simpanan::all(); 
+        // panggil Model Jenis_simpanan, all() = select * from jenis_simpanans
+        return view('jenis_simpanan.index', compact('jenis_simpanan'));
     }
 
     /**
