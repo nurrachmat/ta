@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\JenisSimpananController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AnggotaController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -19,5 +20,6 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::resource('jenis_simpanan', JenisSimpananController::class);
+Route::resource('anggota', AnggotaController::class);
 
 require __DIR__.'/auth.php';

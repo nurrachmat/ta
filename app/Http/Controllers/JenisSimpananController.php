@@ -22,7 +22,7 @@ class JenisSimpananController extends Controller
      */
     public function create()
     {
-        //
+        return view('jenis_simpanan.create');
     }
 
     /**
@@ -30,7 +30,17 @@ class JenisSimpananController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama_jenis_simpanan' => 'required|string|max:255',
+            'nominal' => 'required|numeric',
+        ]);
+
+        Jenis_simpanan::create([
+            'nama_jenis_simpanan' => $request->nama_jenis_simpanan,
+            'nominal' => $request->nominal,
+        ]);
+
+        return redirect()->route('jenis_simpanan.index')->with('success', 'Jenis Simpanan berhasil ditambahkan.');
     }
 
     /**
@@ -38,7 +48,7 @@ class JenisSimpananController extends Controller
      */
     public function show(Jenis_simpanan $jenis_simpanan)
     {
-        //
+        return view('jenis_simpanan.show', compact('jenis_simpanan'));
     }
 
     /**
@@ -46,7 +56,7 @@ class JenisSimpananController extends Controller
      */
     public function edit(Jenis_simpanan $jenis_simpanan)
     {
-        //
+        return view('jenis_simpanan.edit', compact('jenis_simpanan'));
     }
 
     /**
@@ -54,7 +64,17 @@ class JenisSimpananController extends Controller
      */
     public function update(Request $request, Jenis_simpanan $jenis_simpanan)
     {
-        //
+        $request->validate([
+            'nama_jenis_simpanan' => 'required|string|max:255',
+            'nominal' => 'required|numeric',
+        ]);
+
+        $jenis_simpanan->update([
+            'nama_jenis_simpanan' => $request->nama_jenis_simpanan,
+            'nominal' => $request->nominal,
+        ]);
+
+        return redirect()->route('jenis_simpanan.index')->with('success', 'Jenis Simpanan berhasil diperbarui.');
     }
 
     /**
@@ -62,6 +82,8 @@ class JenisSimpananController extends Controller
      */
     public function destroy(Jenis_simpanan $jenis_simpanan)
     {
-        //
+        $jenis_simpanan->delete();
+
+        return redirect()->route('jenis_simpanan.index')->with('success', 'Jenis Simpanan berhasil dihapus.');
     }
 }
