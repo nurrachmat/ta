@@ -39,14 +39,18 @@ class SimpananController extends Controller
             'tanggal_simpan' => 'required|date',
         ]);
 
-        Simpanan::create([
-            'user_id' => $request->user_id,
-            'jenis_simpanan_id' => $request->jenis_simpanan_id,
-            'tanggal_simpan' => $request->tanggal_simpan,
-            'admin_id' => auth()->user()->id, // Ambil admin_id dari user yang sedang login
-        ]);
+        try {
+            Simpanan::create([
+                'user_id' => $request->user_id,
+                'jenis_simpanan_id' => $request->jenis_simpanan_id,
+                'tanggal_simpan' => $request->tanggal_simpan,
+                'admin_id' => auth()->user()->id, // Ambil admin_id dari user yang sedang login
+            ]);
 
-        return redirect()->route('simpanan.index')->with('success', 'Simpanan berhasil ditambahkan.');
+            return redirect()->route('simpanan.index')->with('success', 'Simpanan berhasil ditambahkan.');
+        } catch (\Exception $e) {
+            return redirect()->route('simpanan.index')->with('error', 'Terjadi kesalahan saat menambahkan simpanan.');
+        }
     }
 
     /**
@@ -62,7 +66,9 @@ class SimpananController extends Controller
      */
     public function edit(Simpanan $simpanan)
     {
-        return view('simpanan.edit', compact('simpanan'));
+        $users = User::where('role', 'anggota')->get(); // Ambil user dengan role anggota saja
+        $jenis_simpanans = Jenis_simpanan::all();
+        return view('simpanan.edit', compact('simpanan', 'users', 'jenis_simpanans'));
     }
 
     /**
@@ -76,14 +82,18 @@ class SimpananController extends Controller
             'tanggal_simpan' => 'required|date',
         ]);
 
-        $simpanan->update([
-            'user_id' => $request->user_id,
-            'jenis_simpanan_id' => $request->jenis_simpanan_id,
-            'tanggal_simpan' => $request->tanggal_simpan,
-            'admin_id' => auth()->user()->id, // Ambil admin_id dari user yang sedang login
-        ]);
+        try {
+            $simpanan->update([
+                'user_id' => $request->user_id,
+                'jenis_simpanan_id' => $request->jenis_simpanan_id,
+                'tanggal_simpan' => $request->tanggal_simpan,
+                'admin_id' => auth()->user()->id, // Ambil admin_id dari user yang sedang login
+            ]);
 
-        return redirect()->route('simpanan.index')->with('success', 'Simpanan berhasil diperbarui.');
+            return redirect()->route('simpanan.index')->with('success', 'Simpanan berhasil diperbarui.');
+        } catch (\Exception $e) {
+            return redirect()->route('simpanan.index')->with('error', 'Terjadi kesalahan saat memperbarui simpanan.');
+        }
     }
 
     /**
@@ -91,8 +101,12 @@ class SimpananController extends Controller
      */
     public function destroy(Simpanan $simpanan)
     {
-        $simpanan->delete();
+        try {
+            $simpanan->delete();
 
-        return redirect()->route('simpanan.index')->with('success', 'Simpanan berhasil dihapus.');
+            return redirect()->route('simpanan.index')->with('success', 'Simpanan berhasil dihapus.');
+        } catch (\Exception $e) {
+            return redirect()->route('simpanan.index')->with('error', 'Terjadi kesalahan saat menghapus simpanan.');
+        }
     }
 }

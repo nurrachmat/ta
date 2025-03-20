@@ -23,10 +23,10 @@
                         <td>{{ $value->nominal }}</td>
                         <td>
                             <a href="{{ route('jenis_simpanan.edit', $value->id) }}" class="btn btn-warning">Edit</a>
-                            <form action="{{ route('jenis_simpanan.destroy', $value->id) }}" method="post" style="display: inline;">
+                            <button class="btn btn-danger" onclick="deleteJenisSimpanan({{ $value->id }})">Hapus</button>
+                            <form id="delete-form-{{ $value->id }}" action="{{ route('jenis_simpanan.destroy', $value->id) }}" method="post" style="display: none;">
                                 @csrf
                                 @method('delete')
-                                <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah anda yakin?')">Hapus</button>
                             </form>
                         </td>
                     </tr>
@@ -35,4 +35,42 @@
             </table>
         </div>
     </div>
+</div>
+@endsection
+
+@section('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function deleteJenisSimpanan(id) {
+        Swal.fire({
+            title: 'Apakah anda yakin?',
+            text: "Anda tidak akan dapat mengembalikan ini!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('delete-form-' + id).submit();
+            }
+        })
+    }
+
+    @if(session('success'))
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil',
+            text: '{{ session('success') }}',
+        });
+    @endif
+
+    @if(session('error'))
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal',
+            text: '{{ session('error') }}',
+        });
+    @endif
+</script>
 @endsection
