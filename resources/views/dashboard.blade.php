@@ -63,7 +63,73 @@
                 </div>
                 <!-- ./col -->
             </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>Jumlah Pinjaman per Bulan (2025)</h2>
+                    <div id="pinjaman-chart"></div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        Highcharts.chart('pinjaman-chart', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Jumlah Pinjaman per Bulan (2025)'
+            },
+            xAxis: {
+                categories: [
+                    'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                    'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+                ],
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Jumlah Pinjaman'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: 'Pinjaman',
+                data: [
+                    {{ $jumlahPinjamanPerBulan[1] ?? 0 }},
+                    {{ $jumlahPinjamanPerBulan[2] ?? 0 }},
+                    {{ $jumlahPinjamanPerBulan[3] ?? 0 }},
+                    {{ $jumlahPinjamanPerBulan[4] ?? 0 }},
+                    {{ $jumlahPinjamanPerBulan[5] ?? 0 }},
+                    {{ $jumlahPinjamanPerBulan[6] ?? 0 }},
+                    {{ $jumlahPinjamanPerBulan[7] ?? 0 }},
+                    {{ $jumlahPinjamanPerBulan[8] ?? 0 }},
+                    {{ $jumlahPinjamanPerBulan[9] ?? 0 }},
+                    {{ $jumlahPinjamanPerBulan[10] ?? 0 }},
+                    {{ $jumlahPinjamanPerBulan[11] ?? 0 }},
+                    {{ $jumlahPinjamanPerBulan[12] ?? 0 }}
+                ]
+            }]
+        });
+    });
+</script>
 @endsection

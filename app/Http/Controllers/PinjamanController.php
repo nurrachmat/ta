@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pinjaman;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PinjamanController extends Controller
@@ -12,7 +13,8 @@ class PinjamanController extends Controller
      */
     public function index()
     {
-        //
+        $pinjamans = Pinjaman::all();
+        return view('pinjaman.index', compact('pinjamans'));
     }
 
     /**
@@ -20,7 +22,8 @@ class PinjamanController extends Controller
      */
     public function create()
     {
-        //
+        $users = User::where('role', 'anggota')->get(); // Ambil user dengan role anggota saja
+        return view('pinjaman.create', compact('users'));
     }
 
     /**
@@ -28,7 +31,22 @@ class PinjamanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'jumlah_pinjaman' => 'required|numeric',
+            'tanggal_pinjam' => 'required|date',
+            'jenis_pinjaman' => 'required|string|max:255',
+        ]);
+
+        Pinjaman::create([
+            'user_id' => $request->user_id,
+            'admin_id' => auth()->user()->id, // Ambil admin_id dari user yang sedang login
+            'jumlah_pinjaman' => $request->jumlah_pinjaman,
+            'tanggal_pinjam' => $request->tanggal_pinjam,
+            'jenis_pinjaman' => $request->jenis_pinjaman,
+        ]);
+
+        return redirect()->route('pinjaman.index')->with('success', 'Pinjaman berhasil ditambahkan.');
     }
 
     /**
@@ -36,7 +54,7 @@ class PinjamanController extends Controller
      */
     public function show(Pinjaman $pinjaman)
     {
-        //
+        return view('pinjaman.show', compact('pinjaman'));
     }
 
     /**
@@ -44,7 +62,8 @@ class PinjamanController extends Controller
      */
     public function edit(Pinjaman $pinjaman)
     {
-        //
+        $users = User::where('role', 'anggota')->get(); // Ambil user dengan role anggota saja
+        return view('pinjaman.edit', compact('pinjaman', 'users'));
     }
 
     /**
@@ -52,7 +71,22 @@ class PinjamanController extends Controller
      */
     public function update(Request $request, Pinjaman $pinjaman)
     {
-        //
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'jumlah_pinjaman' => 'required|numeric',
+            'tanggal_pinjam' => 'required|date',
+            'jenis_pinjaman' => 'required|string|max:255',
+        ]);
+
+        $pinjaman->update([
+            'user_id' => $request->user_id,
+            'admin_id' => auth()->user()->id, // Ambil admin_id dari user yang sedang login
+            'jumlah_pinjaman' => $request->jumlah_pinjaman,
+            'tanggal_pinjam' => $request->tanggal_pinjam,
+            'jenis_pinjaman' => $request->jenis_pinjaman,
+        ]);
+
+        return redirect()->route('pinjaman.index')->with('success', 'Pinjaman berhasil diperbarui.');
     }
 
     /**
@@ -60,6 +94,8 @@ class PinjamanController extends Controller
      */
     public function destroy(Pinjaman $pinjaman)
     {
-        //
+        $pinjaman->delete();
+
+        return redirect()->route('pinjaman.index')->with('success', 'Pinjaman berhasil dihapus.');
     }
 }
